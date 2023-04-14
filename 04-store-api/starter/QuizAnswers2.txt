@@ -3,12 +3,19 @@ The function was created to avoid repeating the same try-catch error handling co
 Wrapping our routes in this function allowed us to consolidate the error-handling logic into a single place and make 
 the code more maintainable and follow the DRY principle.
 
-2. Suppose that you want to make sure that both a status code and and error message are send back to the user when they request the URL for a task that does not exist. Assume that you’ve created a CustomAPIError class and an error handler that references that class. Complete the code:
+2. Suppose that you want to make sure that both a status code and and error message are send 
+back to the user when they request the URL for a task that does not exist. 
+Assume that you’ve created a CustomAPIError class and an error handler that references that class. 
+Complete the code:
 const getTask = asyncWrapper(async (req, res, next) => {
   const { id: taskID } = req.params;
   const task = await Task.findOne({ _id: taskID });
   if (!task) {
-    throw new CustomAPIError(`Task with id: ${taskID} not found`, 404);
+  /*create a new instance of CustomAPIError class and pass message and status code as arguments 
+  then pass the error to function next() which will trigger our error handler middleware*/
+
+    const error = new CustomAPIError(`Task with id: ${taskID} not found`, 404);
+    return next(error);
   }
   res.status(200).json({ task });
 });
