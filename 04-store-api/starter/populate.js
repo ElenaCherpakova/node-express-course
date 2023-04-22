@@ -9,9 +9,9 @@ const jsonProducts = require('./products.json');
 const start = async () => {
   try {
     await connectDB(url);
-    await Product.deleteMany();
-    await Product.create(jsonProducts)
-    console.log('Success!')
+    await Product.deleteMany({});
+    await Product.create(jsonProducts);
+    console.log('success');
     process.exit(0)
   } catch (err) {
     console.log(err);
